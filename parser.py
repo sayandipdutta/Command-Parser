@@ -49,7 +49,7 @@ class REPL:
         lst_obj = str(self.output_data[:10]).strip(']') + ' ...]'
         return f"<class REPL: REPL({lst_obj}), length: {self.counter}>"
 
-# keywords = [method for method in ]
+keywords = [method for method in dir(REPL) if not method.startswith('__')]
 
 def readfunc(prompt):
     inp = code.InteractiveConsole().raw_input(prompt)
