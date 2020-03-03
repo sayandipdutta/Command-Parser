@@ -67,7 +67,8 @@ class REPL:
         cls.output_data.append(len(data))
         print(len(data))
         return ascii(f"{len(data)}")
-
+    
+    @classmethod
     def __repr__(cls):
         lst_obj = str(cls.output_data[:10]).strip(']') + ' ...]'
         return ascii(f"<class REPL: REPL({lst_obj}), length: {cls.index_counter}>")
