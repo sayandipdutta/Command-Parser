@@ -379,8 +379,10 @@ class InteractiveConsole(InteractiveInterpreter):
                     args = REPL.output_data[-1] if not len(args) else args
                     # breakpoint()
                     try:
+                        op = func(i for i in args)
+                    except TypeError:
                         op = func(args)
-                    except:
+                    finally:
                         op = func(*args)
                     # if not isinstance(args, list):
                     #     op = func(args)
