@@ -4,15 +4,14 @@ import builtins
 from contextlib import suppress
 from pprint import pprint
 from collections.abc import Iterable
-from simple_parser import *
 import sys
 import pdb
-
+from simple_parser import *
+import time
 
 
 def run_commands(line: str) -> list:
     commands = line.split(';')
-    # breakpoint()
     for command in commands:
         func, *rest = command.strip().split(" ", 1)
         func, args = func_getter(func), arg_parser(rest)
@@ -26,7 +25,6 @@ def run_commands(line: str) -> list:
             op = func(args)
 
         if not op is None:
-            # breakpoint()
             REPL.last_output = REPL.history(op, func.__name__)
             REPL.output_dict[REPL.index_counter] = REPL.last_output.output
             REPL.func_dict[REPL.index_counter] = REPL.last_output.command

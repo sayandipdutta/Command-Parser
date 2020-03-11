@@ -13,7 +13,6 @@ class REPL:
     def Open(cls, filename=None):
         """ Opens the provided file, appends the file object to
             cls.output_data, increments the index_counter """
-        # breakpoint()
         if not filename:
             filename = cls.output_dict.get(-1, cls.last_output.output)
 
@@ -50,7 +49,23 @@ class REPL:
         lst_obj = str(cls.output_dict).strip('}')[:10] + ' ...}'
         return ascii(f"<class REPL: REPL({lst_obj}), length: {cls.index_counter}>")
 
-def lambda_def(statement, funcname):
+def lambda_def(statement: str, funcname: str):
+    """ Define lambda function:
+    -------------------------------
+    statement: str -> provide the definition in string
+    funcname: str -> provide the funcname for the resulting function
+
+    returns: None, sets the function as a method of REPL
+
+    e.g.:
+    lambda_def "x,y: x*y", "foo"
+    # resulting function will be named foo, so in python terms:
+    foo = lambda x,y: x*y
+
+    Can be called like any other function:
+    foo 1,2
+    """
+
     func = eval("lambda " + statement)
     setattr(REPL, funcname, func)
     
