@@ -1,5 +1,7 @@
 from contextlib import suppress
 from collections import namedtuple
+import pandas as import pd
+import numpy as np
 
 class REPL:
     """Creates a REPL object, with some methods"""
@@ -10,44 +12,39 @@ class REPL:
     index_counter = 0
 
     @classmethod
-    def Open(cls, filename=None):
-        """ Opens the provided file, appends the file object to
-            cls.output_data, increments the index_counter """
-        if not filename:
-            filename = cls.output_dict.get(-1, cls.last_output.output)
-
-        with suppress(FileNotFoundError):
-            fileobj = open(filename)
-            data = fileobj.read()
-            fileobj.close()
-            return data
-
-    @classmethod
-    def Filter(cls, token, data_provided=None):
-        """ Filters the specified token from the file object. """
-        # breakpoint()
-        if data_provided:
-            data = data_provided
-        else:
-            data = cls.output_dict.get(-1, cls.last_output.output)
-        
-        filtered = [line for line in data.split('\n') if token in line]
-        return filtered
-
-    @classmethod
-    def Count(cls, data_provided=None):
-        """ Counts the number of occurences found for a token. """
-        if not data_provided:
-            data = REPL.output_dict.get(-1, REPL.last_output.output)
-        else:
-            data = data_provided
-        print(len(data))
-        return len(data)
-
-    @classmethod
     def __repr__(cls):
         lst_obj = str(cls.output_dict).strip('}')[:10] + ' ...}'
-        return ascii(f"<class REPL: REPL({lst_obj}), length: {cls.index_counter}>")
+        return ascii(f"<class REPL: REPL({lst_obj}), last_index: {cls.index_counter}>")
+
+def Open(filename=None, cols):
+    """ Opens the provided file, appends the file object to
+        REPL.output_data, increments the index_counter """
+    if not filename:
+        filename = REPL.output_dict.get(-1, REPL.last_output.output)
+
+    with suppress(FileNotFoundError):
+        data = pd.read_csv(filename, column_names=cols)
+        return data
+
+def Filter(token, data_provided=None):
+    """ Filters the specified token from the file object. """
+    # breakpoint()
+    if data_provided:
+        data = data_provided
+    else:
+        data = REPL.output_dict.get(-1, REPL.last_output.output)
+
+    filtered = data[data['token'] == token]
+    return filtered
+
+def Count(data_provided=None):
+    """ Counts the number of occurences found for a token. """
+    if not data_provided:
+        data = REPL.output_dict.get(-1, REPL.last_output.output)
+    else:
+        data = data_provided
+    print(len(data))
+    return len(data)
 
 def lambda_def(statement: str, funcname: str):
     """ Define lambda function:
@@ -67,6 +64,6 @@ def lambda_def(statement: str, funcname: str):
     """
 
     func = eval("lambda " + statement)
-    setattr(REPL, funcname, func)
+    globals()[funcname] = func
     
     

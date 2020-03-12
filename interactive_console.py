@@ -8,7 +8,7 @@ import sys
 import pdb
 from simple_parser import *
 import time
-
+import traceback
 
 def run_commands(line: str) -> list:
     commands = line.split(';')
@@ -28,7 +28,7 @@ def run_commands(line: str) -> list:
             REPL.output_dict[REPL.index_counter] = REPL.last_output.output
             REPL.func_dict[REPL.index_counter] = REPL.last_output.command
             while len(REPL.output_dict) > 5:
-                del REPL.output_dict[min(REPL.output_dict)]
+                del REPL.output_dict[REPL.index_counter - 5]
             REPL.index_counter += 1
 
 
@@ -69,8 +69,9 @@ def main():
             print("Exiting Interactive Console.")
             break
         
-        except Exception as e:
-            print(e)
+        except Exception as error:
+            print(f"{error.__class__.__name__}:",*error.args)
+            print(traceback.format_exc())
 
 if __name__ == '__main__':
     main()
