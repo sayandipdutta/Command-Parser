@@ -1,6 +1,6 @@
 from contextlib import suppress
 from collections import namedtuple
-import pandas as import pd
+import pandas as pd
 import numpy as np
 
 class REPL:
