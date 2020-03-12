@@ -15,7 +15,6 @@ def run_commands(line: str) -> list:
     for command in commands:
         func, *rest = command.strip().split(" ", 1)
         func, args = func_getter(func), arg_parser(rest)
-       
         if func is None: return
 
         if isinstance(args, tuple):
@@ -29,7 +28,7 @@ def run_commands(line: str) -> list:
             REPL.output_dict[REPL.index_counter] = REPL.last_output.output
             REPL.func_dict[REPL.index_counter] = REPL.last_output.command
             while len(REPL.output_dict) > 5:
-                REPL.output_dict.popitem()
+                del REPL.output_dict[min(REPL.output_dict)]
             REPL.index_counter += 1
 
 

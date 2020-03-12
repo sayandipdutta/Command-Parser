@@ -49,8 +49,8 @@ def arg_parser(line: str):
             opens = np.where(arr == strt)[0]
             for o in opens:
                 for ix, char in enumerate(line[o+1:]):
-                    if not char.isalpha() and char != '.' and not char.isnumeric() \
-                        and char != '_' or (ix == len(line[o+1:]) - 1):
+                    if (not char.isalpha() and char != '.' and not char.isnumeric()
+                        and char != '_') or (ix == len(line[o+1:]) - 1):
                         if (ix == len(line[o+1:]) - 1):
                             c = o + ix + 2
                             d['func'].append(((o, c), line[o:]))
